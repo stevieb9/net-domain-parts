@@ -198,6 +198,16 @@ I<Returns>: Hash reference.
         },
     }
 
+=head2 version
+
+Never exported. Call it as a fully qualified package function. Returns the
+version string of the TLD data being used.
+
+    my $version = Net::Domain::Parts::version();
+    print "$version\n";
+
+    # 2025-01-21_09-07-06_UTC
+
 =head2 tld_list
 
 Not exported by default. Returns the entire list of TLDs, each TLD as a hash
