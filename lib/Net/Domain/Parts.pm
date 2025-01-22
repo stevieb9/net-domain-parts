@@ -141,7 +141,7 @@ Net::Domain::Parts - Extract sub-domain, domain and TLD parts of a domain name.
 
 =head1 SYNOPSIS
 
-    use Domain::Parts;
+    use Net::Domain::Parts;
 
     my $domain_name = 'www.perlmonks.org';
 

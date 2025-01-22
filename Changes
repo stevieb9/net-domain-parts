@@ -1,7 +1,7 @@
 Revision history for Net-Domain-Parts
 
-0.04 UNREL
-    -
+0.04    2025-01-21
+    - Add 'Net' to 'Domain::Parts' in use statement in SYNOPSIS
 
 0.03    2025-01-21
     - Re-order functions in POD
