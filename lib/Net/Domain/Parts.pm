@@ -139,21 +139,79 @@ Net::Domain::Parts - Extract sub-domain, domain and TLD parts of a domain name.
 
 =head1 SYNOPSIS
 
+    use Domain::Parts;
+
+    my $domain_name = 'www.perlmonks.org';
+
+    my ($subdomain, $domain, $tld) = domain_parts($domain_name);
+
+    printf(
+        "Domain %s, Subdomain %s, TLD: %s\n",
+        $domain,
+        $subdomain,
+        $tld
+    );
+
+    # Domain: perlmonks.org, Subdomain: www, TLD: org
+
 =head1 DESCRIPTION
 
-=head1 METHODS
+This module takes a fully qualified domain name, and breaks it down into its
+core components... the TLD, the domain name itself, and any subdomains.
 
-=head2 name
+=head1 FUNCTIONS
 
-Description.
+=head2 domain_parts($domain_name)
+
+Exported by default. Breaks up an FQDN into it's core components.
 
 I<Parameters>:
 
-    $bar
+    $domain_name
 
-I<Mandatory, String>: The name of the thing with the guy and the place.
+I<Mandatory, String>: A fully qualified, valid domain name string.
 
-I<Returns>: C<0> upon success.
+I<Returns>: A list of C<subdomain> (undef if not present), C<domain> (with TLD
+attached) and the C<tld>. If the domain isn't valid (ie. doesn't exist), three
+C<undef>s will be returned.
+
+=head2 tld_struct
+
+Not exported by default. Returns the internal store of TLD data.
+
+I<Returns>: Hash reference.
+
+    {
+        version => 'version_string',
+        third_level_domain => {
+            'witd.gov.pl'       => 1,
+            'fudai.iwate.jp'    => 1,
+        },
+        second_level_domain => {
+            'co.uk'     => 1,
+            'prato.it'  => 1,
+        },
+        top_level_domain => {
+            'com'   => 1,
+            'ca'    => 1,
+            'org'   => 1,
+        },
+    }
+
+=head2 tld_list
+
+Not exported by default. Returns the entire list of TLDs, each TLD as a hash
+key.
+
+I<Returns>: Hash reference.
+
+    {
+        'org'                       => 1,
+        'com'                       => 1,
+        'co.uk'                     => 1,
+        'org.im'                    => 1,
+        'kashiwazaki.niigata.jp'    => 1,
+    }
 
 =head1 AUTHOR
 

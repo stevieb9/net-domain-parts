@@ -7,11 +7,17 @@ use Data::Dumper;
 use File::Edit::Portable;
 use JSON;
 
+# This script updates the lib/Net/Domain/Parts.pm file with updated TLD data
+
+# To use it, download the file found at:
+# https://publicsuffix.org/list/public_suffix_list.dat as plain text into the
+# data/tld.txt file, then delete everything below the __DATA__ line in the
+# forementioned library file, then run the script
+
 my $tld_txt_file = 'data/tld.txt';
 my $tld_json_file = 'data/tld.json';
 
 open my $fh, '<', $tld_txt_file or die "Can't open $tld_txt_file for reading: $!";
-#open my $fh, '<:encoding(UTF-8)', $tld_txt_file or die "Can't open $tld_txt_file for reading: $!";
 
 my %data;
 
