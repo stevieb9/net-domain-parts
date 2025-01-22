@@ -177,6 +177,16 @@ I<Returns>: A list of C<subdomain> (undef if not present), C<domain> (with TLD
 attached) and the C<tld>. If the domain isn't valid (ie. doesn't exist), three
 C<undef>s will be returned.
 
+=head2 version
+
+Never exported. Call it as a fully qualified package function. Returns the
+version string of the TLD data being used.
+
+    my $version = Net::Domain::Parts::version();
+    print "$version\n";
+
+    # 2025-01-21_09-07-06_UTC
+
 =head2 tld_struct
 
 Not exported by default. Returns the internal store of TLD data.
@@ -199,16 +209,6 @@ I<Returns>: Hash reference.
             'org'   => 1,
         },
     }
-
-=head2 version
-
-Never exported. Call it as a fully qualified package function. Returns the
-version string of the TLD data being used.
-
-    my $version = Net::Domain::Parts::version();
-    print "$version\n";
-
-    # 2025-01-21_09-07-06_UTC
 
 =head2 tld_list
 
