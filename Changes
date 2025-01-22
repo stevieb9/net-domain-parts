@@ -1,7 +1,9 @@
 Revision history for Net-Domain-Parts
 
-0.02 UNREL
-    - Added updated versions to Github Actions
+0.02    2025-01-21
+    - Added updated perl versions to Github Actions
+    - Add '=pod' section so hopefully MetaCPAN can see it without the __END__
+      block
 
 0.01    2025-01-21
     - Auto generated distribution with Dist::Mgr

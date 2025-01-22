@@ -128,6 +128,8 @@ sub __placeholder {}
 
 1;
 
+=pod
+
 =head1 NAME
 
 Net::Domain::Parts - Extract sub-domain, domain and TLD parts of a domain name.
