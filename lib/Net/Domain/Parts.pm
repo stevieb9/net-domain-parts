@@ -21,7 +21,7 @@ our @EXPORT_OK = qw(
 our %EXPORT_TAGS;
 $EXPORT_TAGS{all} = [@EXPORT, @EXPORT_OK];
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 my $json;
 {

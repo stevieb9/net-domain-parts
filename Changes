@@ -1,5 +1,8 @@
 Revision history for Net-Domain-Parts
 
+0.05 UNREL
+    -
+
 0.04    2025-01-21
     - Add 'Net' to 'Domain::Parts' in use statement in SYNOPSIS
 
