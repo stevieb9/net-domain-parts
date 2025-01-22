@@ -1,177 +1,3 @@
-package Net::Domain::Parts;
-
-use strict;
-use warnings;
-
-use Carp qw(croak);
-use Data::Dumper;
-use JSON;
-
-use Exporter;
-our @ISA = qw(Exporter);
-our @EXPORT = qw(
-    domain_parts
-);
-
-our @EXPORT_OK = qw(
-    tld_list
-    tld_struct
-);
-
-our %EXPORT_TAGS;
-$EXPORT_TAGS{all} = [@EXPORT, @EXPORT_OK];
-
-our $VERSION = '0.01';
-
-my $json;
-{
-    local $/;
-    $json = <DATA>;
-}
-
-my $tlds = decode_json($json);
-
-sub domain_parts {
-    my ($domain_name) = @_;
-
-    if (! defined $domain_name) {
-        croak(__PACKAGE__ . "::domain_parts() must be sent in a domain name.");
-    }
-
-    if ($domain_name !~ /.+\./) {
-        croak(__PACKAGE__ . "::domain_parts() domain param invalid: $domain_name");
-    }
-
-    my ($sub_domain, $domain, $tld) = _sort_domain_parts($domain_name);
-
-    return($sub_domain, $domain, $tld);
-}
-sub tld_list {
-    my %tld_list;
-
-    for my $key (keys %$tlds) {
-        next if $key =~ /version/;
-        $tld_list{$_} = 1 for keys %{ $tlds->{$key} };
-    }
-
-    return \%tld_list;
-}
-sub tld_struct {
-    return $tlds;
-}
-sub version {
-    return $tlds->{version};
-}
-
-sub _sort_domain_parts {
-    my ($dns_entry) = @_;
-
-    my $dot_count = () = $dns_entry =~ /\./g;
-
-    my $tld_match;
-
-    if ($dot_count > 2) {
-        # Could possibly be a three-level TLD
-
-        my $tld_entries = $tlds->{third_level_domain};
-
-        for (sort { length($b) <=> length($a) } keys %{ $tld_entries }) {
-            if ($dns_entry =~ /$_$/) {
-                $tld_match = $_;
-                last;
-            }
-        }
-    }
-    if (! $tld_match && $dot_count > 1) {
-        # Could possibly match a second-level TLD (eg. co.uk)
-
-        my $tld_entries = $tlds->{second_level_domain};
-
-        for (sort { length($b) <=> length($a) } keys %{ $tld_entries }) {
-            if ($dns_entry =~ /$_$/) {
-                $tld_match = $_;
-                last;
-            }
-        }
-    }
-    if (! $tld_match) {
-        # If no match yet, check the domain against top-level TLDs
-
-        my $tld_entries = $tlds->{top_level_domain};
-
-        for (sort { length($b) <=> length($a) } keys %{ $tld_entries }) {
-            if ($dns_entry =~ /$_$/) {
-                $tld_match = $_;
-                last;
-            }
-        }
-    }
-
-    return(undef, undef, undef) if ! $tld_match;
-
-    my ($sub_domains, $domain);
-
-    $dns_entry =~ s/\.$tld_match//;
-
-    if ($dns_entry =~ /(.*)\.(.*)/) {
-        $sub_domains = $1;
-        $domain = "$2.$tld_match";
-    }
-    else {
-        $domain = "$dns_entry.$tld_match";
-    }
-
-    return($sub_domains, $domain, $tld_match)
-}
-
-sub __placeholder {}
-
-1;
-
-=head1 NAME
-
-Net::Domain::Parts - Extract sub-domain, domain and TLD parts of a domain name.
-
-=for html
-<a href="https://github.com/stevieb9/net-domain-parts/actions"><img src="https://github.com/stevieb9/net-domain-parts/workflows/CI/badge.svg"/></a>
-<a href='https://coveralls.io/github/stevieb9/net-domain-parts?branch=main'><img src='https://coveralls.io/repos/stevieb9/net-domain-parts/badge.svg?branch=main&service=github' alt='Coverage Status' /></a>
-
-
-=head1 SYNOPSIS
-
-=head1 DESCRIPTION
-
-=head1 METHODS
-
-=head2 name
-
-Description.
-
-I<Parameters>:
-
-    $bar
-
-I<Mandatory, String>: The name of the thing with the guy and the place.
-
-I<Returns>: C<0> upon success.
-
-=head1 AUTHOR
-
-Steve Bertrand, C<< <steveb at cpan.org> >>
-
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2025 Steve Bertrand.
-
-This program is free software; you can redistribute it and/or modify it
-under the terms of the the Artistic License (2.0). You may obtain a
-copy of the full license at:
-
-L<http://www.perlfoundation.org/artistic_license_2_0>
-
-=cut
-
-__DATA__
 {
    "third_level_domain" : {
       "tachiarai.fukuoka.jp" : 1,
@@ -2416,8 +2242,8 @@ __DATA__
       "etne.no" : 1,
       "ivgu.no" : 1,
       "musica.ar" : 1,
-      "�司.hk" : 1,
-      "鹿�島.jp" : 1,
+      "公司.hk" : 1,
+      "鹿児島.jp" : 1,
       "net.ve" : 1,
       "so.it" : 1,
       "oystre-slidre.no" : 1,
@@ -3399,7 +3225,7 @@ __DATA__
       "hámmárfeasta.no" : 1,
       "reggiocalabria.it" : 1,
       "org.et" : 1,
-      "�司.cn" : 1,
+      "公司.cn" : 1,
       "kyiv.ua" : 1,
       "mielec.pl" : 1,
       "gov.lb" : 1,
@@ -4539,7 +4365,7 @@ __DATA__
       "pro.ht" : 1,
       "folkebibl.no" : 1,
       "kárášjohka.no" : 1,
-      "�庫.jp" : 1,
+      "兵庫.jp" : 1,
       "edu.la" : 1,
       "nom.za" : 1,
       "net.tm" : 1,
